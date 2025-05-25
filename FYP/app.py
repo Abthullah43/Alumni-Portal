@@ -590,17 +590,17 @@ def send_message_to_alumni():
 
         full_message = f"""Respected Alumni,
 
-        I hope this message finds you well. I am a student from the UIT University and I am reaching out to seek your valuable guidance and mentorship.
+I hope this message finds you well. I am a student from the UIT University and I am reaching out to seek your valuable guidance and mentorship.
 
-        Please find my message below.
+Please find my message below.
 
-        {message}
+{message}
 
-        ---
-        Sent by:
-        Name: {user_name}
-        Email: {user_email}
-        """
+---
+Sent by:
+Name: {user_name}
+Email: {user_email}
+"""
 
         sender_email_account = "alumniconnect.uit@gmail.com" # Make sure this is a config/env var
         password_email_account = "gxdn wwrm kjpz wlqy" # IMPORTANT: Store securely, not in code!
@@ -651,6 +651,199 @@ def logout():
     if os.path.exists(RESULTS_FILE):
         os.remove(RESULTS_FILE)
     return redirect(url_for("login"))
+
+@app.route("/analytics")
+def analytics():
+    if not session.get('logged_in'):
+        return redirect(url_for("login"))
+    return render_template("analytics.html")
+
+@app.route("/api/top-countries")
+def get_top_countries():
+    if not session.get('logged_in'):
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    conn = get_db_connection()
+    query = """
+    SELECT Location FROM alumni_ALL WHERE Location IS NOT NULL AND Location != ''
+    """
+    df = pd.read_sql_query(query, conn)
+    
+    # Extract country (last part after last comma)
+    def extract_country(location):
+        parts = [p.strip() for p in location.split(',')]
+        return parts[-1] if parts else location
+
+    df['country'] = df['Location'].apply(extract_country)
+    country_counts = df['country'].value_counts().head(10)
+    
+    countries_json = {
+        'labels': country_counts.index.tolist(),
+        'data': country_counts.values.tolist()
+    }
+    
+    conn.close()
+    return jsonify(countries_json)
+
+@app.route("/api/top-companies")
+def get_top_companies():
+    if not session.get('logged_in'):
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Get all experience entries
+    cursor.execute("SELECT Experience FROM alumni_ALL WHERE Experience IS NOT NULL AND Experience != ''")
+    experiences = cursor.fetchall()
+    
+    # Process experiences to extract companies
+    companies_data = []
+    for exp in experiences:
+        if not exp[0]:
+            continue
+            
+        # Split into individual experience entries
+        exp_entries = exp[0].split('\n')
+        
+        # Get the first (most recent) experience entry
+        if exp_entries:
+            entry = exp_entries[0].strip()
+            if not entry:
+                continue
+                
+            # Try different patterns to extract company name
+            company = None
+            
+            # Pattern 1: "Position at Company (Duration)"
+            if ' at ' in entry.lower():
+                parts = entry.split(' at ', 1)
+                if len(parts) > 1:
+                    company = parts[1].split('(')[0].strip()
+            
+            # Pattern 2: "Company - Position"
+            elif ' - ' in entry:
+                parts = entry.split(' - ', 1)
+                if len(parts) > 0:
+                    company = parts[0].strip()
+            
+            # Pattern 3: "Position, Company"
+            elif ', ' in entry:
+                parts = entry.split(', ', 1)
+                if len(parts) > 1:
+                    company = parts[1].split('(')[0].strip()
+            
+            if company:
+                # Clean company name
+                company = ' '.join(company.split())  # Remove extra spaces
+                company = company.strip('., ')  # Remove trailing punctuation
+                
+                # Skip if company name is too short or contains common non-company words
+                skip_words = {'present', 'current', 'previous', 'former', 'intern', 'internship'}
+                if (len(company) > 2 and 
+                    not any(word in company.lower() for word in skip_words) and
+                    not company.lower().startswith(('from', 'since', 'until', 'to'))):
+                    companies_data.append(company)
+    
+    # Count company frequencies and handle similar names
+    company_counts = pd.Series(companies_data).value_counts()
+    
+    # Group similar company names (case-insensitive)
+    company_counts = company_counts.groupby(company_counts.index.str.lower()).sum()
+    
+    # Sort by count and get top 10
+    top_companies = company_counts.sort_values(ascending=False).head(10)
+    
+    companies_json = {
+        'labels': top_companies.index.tolist(),
+        'data': top_companies.values.tolist()
+    }
+    
+    conn.close()
+    return jsonify(companies_json)
+
+@app.route("/api/top-countries-exclude-pakistan")
+def get_top_countries_exclude_pakistan():
+    if not session.get('logged_in'):
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    conn = get_db_connection()
+    query = """
+    SELECT Location FROM alumni_ALL WHERE Location IS NOT NULL AND Location != ''
+    """
+    df = pd.read_sql_query(query, conn)
+    
+    def extract_country(location):
+        parts = [p.strip() for p in location.split(',')]
+        return parts[-1] if parts else location
+
+    df['country'] = df['Location'].apply(extract_country)
+    # Exclude Pakistan (case-insensitive)
+    df = df[df['country'].str.lower() != 'pakistan']
+    country_counts = df['country'].value_counts().head(10)
+    
+    countries_json = {
+        'labels': country_counts.index.tolist(),
+        'data': country_counts.values.tolist()
+    }
+    
+    conn.close()
+    return jsonify(countries_json)
+
+@app.route("/api/top-companies-exclude-freelance")
+def get_top_companies_exclude_freelance():
+    if not session.get('logged_in'):
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT Experience FROM alumni_ALL WHERE Experience IS NOT NULL AND Experience != ''")
+    experiences = cursor.fetchall()
+    
+    companies_data = []
+    for exp in experiences:
+        if not exp[0]:
+            continue
+        exp_entries = exp[0].split('\n')
+        if exp_entries:
+            entry = exp_entries[0].strip()
+            if not entry:
+                continue
+            company = None
+            if ' at ' in entry.lower():
+                parts = entry.split(' at ', 1)
+                if len(parts) > 1:
+                    company = parts[1].split('(')[0].strip()
+            elif ' - ' in entry:
+                parts = entry.split(' - ', 1)
+                if len(parts) > 0:
+                    company = parts[0].strip()
+            elif ', ' in entry:
+                parts = entry.split(', ', 1)
+                if len(parts) > 1:
+                    company = parts[1].split('(')[0].strip()
+            if company:
+                company = ' '.join(company.split())
+                company = company.strip('., ')
+                skip_words = {'present', 'current', 'previous', 'former', 'intern', 'internship'}
+                if (len(company) > 2 and 
+                    not any(word in company.lower() for word in skip_words) and
+                    not company.lower().startswith(('from', 'since', 'until', 'to'))):
+                    companies_data.append(company)
+    # Exclude freelance/self-employed companies
+    exclude_list = ['fiverr', 'upwork', 'self-employed', 'self employed', 'freelance', 'freelancer']
+    company_counts = pd.Series(companies_data).value_counts()
+    company_counts = company_counts.groupby(company_counts.index.str.lower()).sum()
+    for exclude in exclude_list:
+        if exclude in company_counts:
+            company_counts = company_counts.drop(exclude)
+    top_companies = company_counts.sort_values(ascending=False).head(10)
+    companies_json = {
+        'labels': top_companies.index.tolist(),
+        'data': top_companies.values.tolist()
+    }
+    conn.close()
+    return jsonify(companies_json)
 
 if __name__ == "__main__":
     app.run(debug=True)
