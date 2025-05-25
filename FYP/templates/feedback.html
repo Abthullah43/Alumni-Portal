@@ -55,6 +55,7 @@
         .nav-links {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -66,6 +67,118 @@
 
         .nav-links a:hover {
             color: #3B82F6;
+        }
+
+        /* Profile Icon */
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .profile-icon i {
+            font-size: 1.2rem;
+            color: white;
+            z-index: 2;
+        }
+
+        .profile-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .profile-icon:hover::before {
+            left: 100%;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: rgba(26, 31, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(26, 31, 46, 0.95);
+            transform: rotate(45deg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 0.3rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #93C5FD;
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            width: 18px;
+            font-size: 1rem;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0.5rem 0;
         }
 
         .container {
@@ -232,6 +345,11 @@
             .nav-links {
                 gap: 1rem;
             }
+
+            .profile-dropdown {
+                right: -50px;
+                min-width: 180px;
+            }
         }
     </style>
 </head>
@@ -245,7 +363,32 @@
             <a href="{{ url_for('homepage') }}">Home</a>
             <a href="{{ url_for('about') }}">About</a>
             <a href="{{ url_for('feedback') }}">Feedback</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+            
+            <!-- Profile Icon with Dropdown -->
+            <div class="profile-container">
+                <div class="profile-icon" onclick="toggleProfileDropdown()">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="{{ url_for('profile') }}" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{{ url_for('request_form') }}" class="dropdown-item">
+                        <i class="fas fa-search"></i>
+                        <span>Alumni Search</span>
+                    </a>
+                    <a href="{{ url_for('feedback') }}" class="dropdown-item">
+                        <i class="fas fa-comment"></i>
+                        <span>Feedback</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ url_for('logout') }}" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -297,6 +440,21 @@
     </div>
 
     <script>
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileContainer = document.querySelector('.profile-container');
+            const dropdown = document.getElementById('profileDropdown');
+            
+            if (!profileContainer.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const ratingButtons = document.querySelectorAll('.rating-btn');
             const ratingInput = document.getElementById('ratingInput');

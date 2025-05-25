@@ -219,6 +219,78 @@ def verify_otp_forgot_password():
         print(f"Error updating password: {e}")
         return jsonify({"error": "Failed to update password"}), 500
 
+# Route for profile page
+@app.route("/profile")
+def profile():
+    if not session.get('logged_in'):
+        return redirect(url_for("login"))
+    return render_template("Profile.html")
+
+# Route for updating profile
+@app.route("/update_profile", methods=["POST"])
+def update_profile():
+    if not session.get('logged_in'):
+        return redirect(url_for("login"))
+    
+    try:
+        # Get form data
+        full_name = request.form.get("fullName", "").strip()
+        email = request.form.get("email", "").strip()
+        phone = request.form.get("phone", "").strip()
+        roll_number = request.form.get("rollNumber", "").strip()
+        current_password = request.form.get("currentPassword", "").strip()
+        new_password = request.form.get("newPassword", "").strip()
+        
+        # Get current user from session
+        current_username = session.get('username')
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Verify current password
+        cursor.execute("SELECT * FROM students WHERE Full_Name = ?", (current_username,))
+        user_record = cursor.fetchone()
+        
+        if not user_record or user_record["Password"] != current_password:
+            conn.close()
+            flash("Current password is incorrect!", "error")
+            return redirect(url_for("profile"))
+        
+        # Check if email is being used by another user
+        if email != user_record["Email"]:
+            cursor.execute("SELECT * FROM students WHERE LOWER(Email) = LOWER(?) AND Full_Name != ?", 
+                          (email, current_username))
+            if cursor.fetchone():
+                conn.close()
+                flash("Email is already being used by another user!", "error")
+                return redirect(url_for("profile"))
+        
+        # Update user information
+        update_password = new_password if new_password else current_password
+        
+        cursor.execute("""
+            UPDATE students 
+            SET Full_Name = ?, Email = ?, Phone_No_ = ?, Roll_Number = ?, Password = ?
+            WHERE Full_Name = ?
+        """, (full_name, email, phone, roll_number, update_password, current_username))
+        
+        conn.commit()
+        conn.close()
+        
+        # Update session with new username if changed
+        session['username'] = full_name
+        
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for("profile"))
+        
+    except sqlite3.Error as e:
+        print(f"Database error in update_profile: {e}")
+        flash("Error updating profile. Please try again.", "error")
+        return redirect(url_for("profile"))
+    except Exception as e:
+        print(f"Error in update_profile: {e}")
+        flash("An unexpected error occurred.", "error")
+        return redirect(url_for("profile"))
 
 
 # Route for about page
