@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Alumni Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-light: #93C5FD;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1f2e;
+            color: #cbd5e1;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Nav Bar - Same as Homepage */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(26, 31, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Profile Icon */
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .profile-icon i {
+            font-size: 1.2rem;
+            color: white;
+            z-index: 2;
+        }
+
+        .profile-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .profile-icon:hover::before {
+            left: 100%;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: rgba(26, 31, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(26, 31, 46, 0.95);
+            transform: rotate(45deg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 0.3rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            width: 18px;
+            font-size: 1rem;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0.5rem 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-details h1 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* Profile Update Form */
+        .update-profile-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .profile-details h1 {
+                font-size: 1.5rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hidden class for form toggle */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="{{ url_for('homepage') }}" class="logo">
+            <i class="fas fa-user-graduate"></i>
+            <span>Alumni Connect</span>
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('homepage') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('request_form') }}">Search</a>
+            <a href="{{ url_for('feedback') }}">Feedback</a>
+            
+            <!-- Profile Icon with Dropdown -->
+            <div class="profile-container">
+                <div class="profile-icon" onclick="toggleProfileDropdown()">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="{{ url_for('profile') }}" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{{ url_for('request_form') }}" class="dropdown-item">
+                        <i class="fas fa-search"></i>
+                        <span>Alumni Search</span>
+                    </a>
+                    <a href="{{ url_for('feedback') }}" class="dropdown-item">
+                        <i class="fas fa-comment"></i>
+                        <span>Feedback</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ url_for('logout') }}" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Profile Header -->
+        <div class="profile-header fade-in">
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-details">
+                    <h1>{{ (session.username or 'Student Name') | title }}</h1>
+                    <p>Career Dreams, Real Connections</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Profile Management Card -->
+            <div class="dashboard-card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <h3 class="card-title">Profile Management</h3>
+                </div>
+                <div class="card-content">
+                    <p>Update your personal information, contact details, and preferences to keep your profile current.</p>
+                </div>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="toggleUpdateForm()">
+                        <i class="fas fa-edit"></i>
+                        Update Profile
+                    </button>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i>
+                        View Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Alumni Search Card -->
+            <div class="dashboard-card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="card-title">Alumni Search</h3>
+                </div>
+                <div class="card-content">
+                    <p>Find and connect with alumni based on field, location, company, and specific keywords.</p>
+                </div>
+                <div class="card-actions">
+                    <a href="{{ url_for('request_form') }}" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                        Search Alumni
+                    </a>
+                    <a href="{{ url_for('display_results') }}" class="btn btn-secondary">
+                        <i class="fas fa-history"></i>
+                        Recent Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Feedback & Support Card -->
+            <div class="dashboard-card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <h3 class="card-title">Feedback & Support</h3>
+                </div>
+                <div class="card-content">
+                    <p>Share your experience and help us improve the platform for all students and alumni.</p>
+                </div>
+                <div class="card-actions">
+                    <a href="{{ url_for('feedback') }}" class="btn btn-success">
+                        <i class="fas fa-star"></i>
+                        Give Feedback
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i>
+                        Help Center
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="dashboard-card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">Quick Actions</h3>
+                </div>
+                <div class="card-content">
+                    <p>Access frequently used features and shortcuts to make your experience smoother.</p>
+                </div>
+                <div class="card-actions">
+                    <a href="{{ url_for('homepage') }}" class="btn btn-secondary">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Profile Form (Hidden by default) -->
+        <div class="update-profile-section hidden" id="updateProfileForm">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <h3 class="card-title">Update Profile Information</h3>
+            </div>
+            
+            <form id="profileUpdateForm" action="{{ url_for('update_profile') }}" method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollNumber">Roll Number</label>
+                        <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter your roll number">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="currentPassword">Current Password (required for changes)</label>
+                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" required>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="newPassword">New Password (optional)</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                    </div>
+                </div>
+                
+                <div class="card-actions">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleUpdateForm()">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Profile dropdown toggle
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileContainer = document.querySelector('.profile-container');
+            const dropdown = document.getElementById('profileDropdown');
+            
+            if (!profileContainer.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Toggle update profile form
+        function toggleUpdateForm() {
+            const form = document.getElementById('updateProfileForm');
+            form.classList.toggle('hidden');
+            
+            if (!form.classList.contains('hidden')) {
+                form.scrollIntoView({ behavior: 'smooth' });
+                loadCurrentUserData();
+            }
+        }
+
+        // Load current user data into form
+        function loadCurrentUserData() {
+            // This would typically fetch data from the server
+            // For now, we'll use placeholder data
+            document.getElementById('fullName').value = '{{ session.username or "" }}';
+            // You can fetch other data via AJAX or pass it from the backend
+        }
+
+        // Form validation
+        document.getElementById('profileUpdateForm').addEventListener('submit', function(e) {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword && newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('New passwords do not match!');
+                return false;
+            }
+            
+            if (newPassword && newPassword.length < 6) {
+                e.preventDefault();
+                alert('New password must be at least 6 characters long!');
+                return false;
+            }
+        });
+
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.dashboard-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
