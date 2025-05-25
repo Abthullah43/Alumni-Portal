@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage - Alumni Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-light: #93C5FD;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1f2e;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        /* Nav Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(26, 31, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/static/Background.jpg') no-repeat center center/cover;
+            filter: brightness(0.4) blur(3px);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 20px;
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #f1f5f9;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .hero-btn {
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-5px);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 100px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+        }
+
+        .feature-icon i {
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #0F172A;
+            color: #94a3b8;
+            padding: 60px 5% 30px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-logo-icon i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .social-link i {
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            margin-bottom: 10px;
+        }
+
+        .link-list a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .link-list a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                max-width: 250px;
+                margin: 0 auto;
+            }
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <a href="{{ url_for('homepage') }}" class="logo">
+            <i class="fas fa-user-graduate"></i>
+            <span>Alumni Connect</span>
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('homepage') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('request_form') }}">Search</a>
+            <a href="{{ url_for('feedback') }}">Feedback</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Alumni Connect</h1>
+            <p class="hero-subtitle">Bridging the Gap Between Students and Alumni to Foster Success and Collaboration. Connect with mentors, access resources, and build your professional network.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('request_form') }}" class="hero-btn btn-primary">Make a Request</a>
+                <a href="{{ url_for('about') }}" class="hero-btn btn-secondary">About Us</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <h2 class="section-title">Why Join Our Network?</h2>
+        <p class="section-subtitle">Discover the advantages of being part of our thriving community</p>
+        
+        <div class="features">
+            <div class="feature-card" style="animation-delay: 0.1s;">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Connect with Alumni</h3>
+                <p class="feature-description">Build meaningful relationships with graduates who have walked the same path and are eager to guide you through your journey.</p>
+            </div>
+            
+            <div class="feature-card" style="animation-delay: 0.2s;">
+                <div class="feature-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="feature-title">Career Opportunities</h3>
+                <p class="feature-description">Access exclusive job postings, internships, and career advice from industry professionals in your field of interest.</p>
+            </div>
+            
+            <div class="feature-card" style="animation-delay: 0.3s;">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="feature-title">Mentorship Programs</h3>
+                <p class="feature-description">Receive guidance from experienced mentors who can help you navigate academic challenges and career decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <a href="{{ url_for('homepage') }}">
+                    <div class="footer-logo-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <span>Alumni Connect</span>
+                </a>
+                <p class="footer-text">Connecting students and alumni for success.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul class="link-list">
+                    <li><a href="{{ url_for('homepage') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('request_form') }}">Search</a></li>
+                    <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul class="link-list">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Alumni Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll animation for features
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            featureCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Sticky navigation
+            const navContainer = document.querySelector('.nav-container');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    navContainer.style.background = 'rgba(26, 31, 46, 0.95)';
+                    navContainer.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+                } else {
+                    navContainer.style.background = 'rgba(26, 31, 46, 0.8)';
+                    navContainer.style.boxShadow = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Student Alumni Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+            --error: #EF4444;
+            --success: #10B981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            height: auto;
+            min-height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .welcome-section {
+            width: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-section {
+            width: 50%;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .login-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .forgot-password-link {
+            text-align: right;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+
+        .forgot-password-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--gray);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .welcome-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .logo i {
+            font-size: 48px;
+            color: white;
+        }
+
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .welcome-text {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .features {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature i {
+            font-size: 24px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            color: var(--error);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Modal Container */
+        .modal-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 24px 24px 0;
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            padding: 0 24px 24px;
+        }
+
+        .modal-form-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .modal-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .modal-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-message.success {
+            background: #D1FAE5;
+            color: var(--success);
+            border: 1px solid #A7F3D0;
+        }
+
+        .modal-message.error {
+            background: #FEE2E2;
+            color: var(--error);
+            border: 1px solid #FECACA;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .otp-section {
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .otp-section.show {
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #F3F4F6;
+            color: var(--dark);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                margin: 20px;
+            }
+
+            .welcome-section, .login-section {
+                width: 100%;
+                padding: 40px;
+            }
+
+            .welcome-section {
+                display: none;
+            }
+
+            .modal-container {
+                width: 95%;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1 class="welcome-title">Welcome to Alumni Connect</h1>
+                <p class="welcome-text">Connect with alumni, explore opportunities, and build your professional network.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-network-wired"></i>
+                        <span class="feature-text">Connect with industry professionals</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-briefcase"></i>
+                        <span class="feature-text">Discover career opportunities</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <span class="feature-text">Join a thriving community</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-section">
+            <div class="login-header">
+                <h2>Sign In</h2>
+                <p>Access your alumni network account</p>
+            </div>
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <div class="forgot-password-link">
+                    <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+            <div class="register-link">
+                Don't have an account? <a href="{{ url_for('registration') }}">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="close-modal" id="closeModalBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h3 class="modal-title">Reset Password</h3>
+                <p class="modal-subtitle">Enter your registered email to receive an OTP</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form-group">
+                    <label for="fp_email">Email Address</label>
+                    <input type="email" id="fp_email" class="modal-input" placeholder="your.email@example.com" required>
+                </div>
+                
+                <div id="fp_message"></div>
+                
+                <div class="modal-buttons">
+                    <button id="sendOtpBtn" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send OTP
+                    </button>
+                </div>
+
+                <div id="otpSection" class="otp-section">
+                    <div class="modal-form-group">
+                        <label for="fp_otp">OTP Code</label>
+                        <input type="text" id="fp_otp" class="modal-input" placeholder="Enter 6-digit OTP" maxlength="6">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="fp_new_password">New Password</label>
+                        <input type="password" id="fp_new_password" class="modal-input" placeholder="Enter new password" minlength="6">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label for="fp_confirm_password">Confirm Password</label>
+                        <input type="password" id="fp_confirm_password" class="modal-input" placeholder="Confirm new password" minlength="6">
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button id="verifyOtpBtn" class="btn btn-success">
+                            <i class="fas fa-check-circle"></i> Reset Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('forgotPasswordModal');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const otpSection = document.getElementById('otpSection');
+        const messageDiv = document.getElementById('fp_message');
+
+        // Open modal
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close modal
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetModal();
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking overlay
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+
+        // Reset modal
+        function resetModal() {
+            document.getElementById('fp_email').value = '';
+            document.getElementById('fp_otp').value = '';
+            document.getElementById('fp_new_password').value = '';
+            document.getElementById('fp_confirm_password').value = '';
+            otpSection.classList.remove('show');
+            messageDiv.innerHTML = '';
+            messageDiv.className = '';
+        }
+
+        // Show message with styling
+        function showMessage(message, type = 'error') {
+            messageDiv.innerHTML = `
+                <div class="modal-message ${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+        }
+
+        // Send OTP
+        document.getElementById('sendOtpBtn').addEventListener('click', function() {
+            const email = document.getElementById('fp_email').value.trim();
+            const sendBtn = this;
+            
+            if (!email) {
+                showMessage('Please enter your email address.', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            // Disable button and show loading
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            fetch('/send_otp_forgot_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `email=${encodeURIComponent(email)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('OTP sent successfully! Please check your email.', 'success');
+                    otpSection.classList.add('show');
+                } else {
+                    showMessage(data.error || 'Error sending OTP. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Network error. Please check your connection and try again.', 'error');
+            })
+            .finally(() => {
+                // Re-enable button
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+            });
+        });
+
+        // Verify OTP and Reset Password
+        document.getElementById('verifyOtpBtn').addEventListener('click', function() {
+            const email = document.getElementById('fp_email').value.trim();
+            const otp = document.getElementById('fp_otp').value.trim();
+            const newPassword = document.getElementById('fp_new_password').value;
+            const confirmPassword = document.getElementById('fp_confirm_password').value;
+            const verifyBtn = this;
+
+            if (!otp || !newPassword || !confirmPassword) {
+                showMessage('Please fill in all fields.', 'error');
+                return;
+            }
+
+            if (otp.length !== 6) {
+                showMessage('OTP must be 6 digits long.', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showMessage('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            // Disable button and show loading
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+
+            fetch('/verify_otp_forgot_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&new_password=${encodeURIComponent(newPassword)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('Password reset successful! You can now login with your new password.', 'success');
+                    setTimeout(() => {
+                        closeModal();
+                    }, 3000);
+                } else {
+                    showMessage(data.error || 'OTP verification failed. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Network error. Please check your connection and try again.', 'error');
+            })
+            .finally(() => {
+                // Re-enable button
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reset Password';
+            });
+        });
+
+        // Email validation helper
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Auto-focus OTP input when section shows
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.target.classList.contains('show')) {
+                    setTimeout(() => {
+                        document.getElementById('fp_otp').focus();
+                    }, 300);
+                }
+            });
+        });
+
+        observer.observe(otpSection, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    </script>
+</body>
+</html>

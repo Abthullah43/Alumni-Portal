@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Alumni Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+            --error: #EF4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+
+        .logo i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            z-index: 1;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Email input group with OTP button */
+        .email-input-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .email-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .email-input-wrapper .form-control {
+            width: 100%;
+        }
+
+        .otp-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--primary);
+            color: white;
+            white-space: nowrap;
+            height: 48px;
+        }
+
+        .otp-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .otp-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            color: var(--error);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-message {
+            background: #D1FAE5;
+            color: var(--secondary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--primary);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-link {
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .otp-btn {
+                width: 100%;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>Create Account</h1>
+            <p>Join our alumni network today</p>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div id="otpMessage"></div>
+
+        <form method="POST" action="/register_with_otp">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roll_number">Roll Number</label>
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="roll_number" name="roll_number" class="form-control" placeholder="Enter your roll number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="email-input-group">
+                    <div class="email-input-wrapper">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                        </div>
+                    </div>
+                    <button type="button" class="otp-btn" id="sendOtpBtn" onclick="sendOTP()">
+                        <i class="fas fa-paper-plane"></i> Send OTP
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter your phone number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="otp">Enter OTP</label>
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter OTP sent to your email" maxlength="6" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" minlength="6" required>
+                </div>
+                <div class="password-hint">Password must be at least 6 characters long</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm your password" minlength="6" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Create Account</button>
+
+            <div class="login-link">
+                Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function sendOTP() {
+            const email = document.getElementById("email").value.trim();
+            const sendBtn = document.getElementById("sendOtpBtn");
+            const messageDiv = document.getElementById("otpMessage");
+            
+            if (!email) {
+                showMessage("Please enter your email first.", "error");
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage("Please enter a valid email address.", "error");
+                return;
+            }
+
+            // Disable button and show loading
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            fetch("/send_otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `email=${encodeURIComponent(email)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage("OTP sent successfully! Please check your email.", "success");
+                    // Focus on OTP input after successful send
+                    setTimeout(() => {
+                        document.getElementById("otp").focus();
+                    }, 500);
+                } else {
+                    showMessage("Error: " + (data.error || "Failed to send OTP. Please try again."), "error");
+                }
+            })
+            .catch(error => {
+                showMessage("Network error. Please check your connection and try again.", "error");
+            })
+            .finally(() => {
+                // Re-enable button
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+            });
+        }
+
+        function showMessage(message, type = 'error') {
+            const messageDiv = document.getElementById("otpMessage");
+            const className = type === 'success' ? 'success-message' : 'error-message';
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
+            
+            messageDiv.innerHTML = `
+                <div class="${className}">
+                    <i class="fas fa-${icon}"></i>
+                    ${message}
+                </div>
+            `;
+
+            // Auto-hide success message after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        // Email validation helper
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Password validation
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const confirmPassword = document.getElementById('confirm_password');
+            
+            if (password.length > 0 && password.length < 6) {
+                this.setCustomValidity('Password must be at least 6 characters long');
+            } else {
+                this.setCustomValidity('');
+            }
+            
+            // Check confirm password if it has value
+            if (confirmPassword.value && confirmPassword.value !== password) {
+                confirmPassword.setCustomValidity('Passwords do not match');
+            } else if (confirmPassword.value) {
+                confirmPassword.setCustomValidity('');
+            }
+        });
+
+        // Confirm password validation
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && confirmPassword !== password) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Form validation before submit
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password.length < 6) {
+                e.preventDefault();
+                showMessage('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

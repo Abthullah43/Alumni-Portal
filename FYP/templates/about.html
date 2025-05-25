@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Alumni Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-light: #60A5FA;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #1a1f2e; /* Updated background */
+            color: #cbd5e1; /* Updated base text color */
+            line-height: 1.6;
+        }
+
+        /* Updated Nav Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(26, 31, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        /* End of Updated Nav Bar */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 60px; /* Adjust top padding for fixed nav */
+        }
+
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;  /* Reduced gap for better fit */
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .about-content {
+            animation: fadeInLeft 1s ease-out;
+        }
+
+        .about-image {
+            position: relative;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;  /* Ensures the aspect ratio is maintained */
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid var(--primary);
+            border-radius: 24px;
+            z-index: -1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .about-section {
+                grid-template-columns: 1fr;  /* Stack the content and image on smaller screens */
+                text-align: center;
+            }
+
+            .about-image {
+                margin-bottom: 40px;
+            }
+
+            .about-image::after {
+                display: none;  /* Hide decorative border on mobile */
+            }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff; /* Ensure white title */
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray); /* Use theme gray */
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* More responsive grid */
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05); /* Dark theme card bg */
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+        }
+
+        .feature-icon i {
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff; /* Feature title color */
+        }
+
+        .feature-description {
+            color: var(--gray); /* Use theme gray */
+            font-size: 0.9rem;
+        }
+
+        .team-section {
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member:hover {
+             transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff; /* Member name color */
+        }
+
+        .member-role {
+            color: var(--primary-light); /* Lighter color for role */
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .member-socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .member-socials a {
+            color: var(--gray);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .member-socials a:hover {
+            color: var(--primary);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #0F172A; /* Darker footer */
+            color: #94a3b8;
+            padding: 60px 5% 30px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-logo-icon i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .social-link i {
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            margin-bottom: 10px;
+        }
+
+        .link-list a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .link-list a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .about-image {
+                grid-row: 1; /* Move image above text */
+                margin-bottom: 40px;
+            }
+            .about-image::after {
+                display: none; /* Hide decorative border on mobile */
+            }
+             .container {
+                padding-top: 100px; /* Adjust padding for smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem; /* Adjust nav padding */
+            }
+            .nav-links {
+                /* Mobile menu handling would go here if needed, assuming it's consistent */
+                gap: 1rem;
+            }
+             .section-title {
+                font-size: 2rem;
+            }
+            .features {
+                grid-template-columns: 1fr; /* Stack features */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <a href="{{ url_for('homepage') }}" class="logo">
+            <i class="fas fa-user-graduate"></i>
+            <span>Alumni Connect</span>
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('homepage') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('request_form') }}">Search</a>
+            <a href="{{ url_for('feedback') }}">Feedback</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="about-section">
+            <div class="about-content">
+                <h1 class="section-title">About Alumni Connect</h1>
+                <p class="section-subtitle">Bridging the gap between current students and successful alumni to foster mentorship, networking, and career growth.</p>
+                <p>Alumni Connect is dedicated to building a strong, supportive community where students can learn from the experiences of those who came before them, and alumni can give back by sharing their knowledge and insights. Our platform facilitates meaningful connections that empower students to achieve their academic and professional goals.</p>
+            </div>
+            <div class="about-image">
+                <img src="/static/alumuni.jpg" alt="Group of students and alumni collaborating">
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2 class="section-title" style="text-align: center; display: block; margin-bottom: 2rem;">Our Core Features</h2>
+            <div class="features">
+                <div class="feature-card" style="animation-delay: 0.1s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Advanced Search</h3>
+                    <p class="feature-description">Easily find alumni based on field of study, location, company, batch, and keywords.</p>
+                </div>
+                <div class="feature-card" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="feature-title">Direct Messaging</h3>
+                    <p class="feature-description">Connect directly with alumni through our secure messaging system (coming soon!).</p>
+                </div>
+                <div class="feature-card" style="animation-delay: 0.3s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Feedback System</h3>
+                    <p class="feature-description">Share your experience and help us improve the platform with our easy-to-use feedback form.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h2 class="section-title">Meet the Team</h2>
+            <p class="section-subtitle">We are passionate students dedicated to connecting our peers with valuable alumni resources.</p>
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <div class="team-member" style="animation-delay: 0.1s;">
+                    <div class="member-image">
+                        <img src="/static/usman.jpg" alt="Team Member 1">
+                    </div>
+                    <h3 class="member-name">Usman</h3>
+                    <p class="member-role">Developer</p>
+                    <div class="member-socials">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                 <!-- Team Member 2 -->
+                <div class="team-member" style="animation-delay: 0.2s;">
+                    <div class="member-image">
+                        <img src="/static/ahmed.jpg" alt="Team Member 2">
+                    </div>
+                    <h3 class="member-name">Ahmed</h3>
+                    <p class="member-role">Developer</p>
+                     <div class="member-socials">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                 <!-- Team Member 3 -->
+                 <div class="team-member" style="animation-delay: 0.3s;">
+                    <div class="member-image">
+                        <img src="/static/adeel.jpg" alt="Team Member 3">
+                    </div>
+                    <h3 class="member-name">Adeel</h3>
+                    <p class="member-role">Developer</p>
+                     <div class="member-socials">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                    
+                    </div>
+                    <!-- Team Member 4 -->
+                <div class="team-member" style="animation-delay: 0.4s;">
+                    <div class="member-image">
+                        <img src="/static/abd.jpg" alt="Team Member 4">
+                    </div>
+                    <h3 class="member-name">Abthullah</h3>
+                    <p class="member-role">Developer</p>
+                    <div class="member-socials">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <a href="{{ url_for('homepage') }}">
+                    <div class="footer-logo-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <span>Alumni Connect</span>
+                </a>
+                <p class="footer-text">Connecting students and alumni for success.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul class="link-list">
+                    <li><a href="{{ url_for('homepage') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('request_form') }}">Search</a></li>
+                    <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul class="link-list">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Alumni Connect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Optional: Add animations on scroll
+        const animatedElements = document.querySelectorAll('.animate__animated');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__fadeInUp'); // Example animation
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

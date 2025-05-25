@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Student Alumni Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #1D4ED8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #9CA3AF;
+            --error: #EF4444;
+            --gradient-start: #4F46E5;
+            --gradient-end: #3B82F6;
+            --chat-bg: #F1F5F9;
+            --chat-border: #E2E8F0;
+            --msg-sent: #4F46E5;
+            --msg-received: #E2E8F0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        body.loaded {
+            opacity: 1;
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 25%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .results-section {
+            width: 75%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+        }
+        
+        .results-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .results-header h1 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .results-header p {
+            color: var(--gray);
+            font-size: 16px;
+        }
+        
+        /* Table Styling */
+        .table-container {
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        /* Define consistent column widths */
+        th:nth-child(1), td:nth-child(1) {
+            width: 5%;
+            text-align: center;
+        }
+        
+        th:nth-child(2), td:nth-child(2) {
+            width: 15%;
+        }
+        
+        th:nth-child(3), td:nth-child(3) {
+            width: 15%;
+        }
+        
+        th:nth-child(4), td:nth-child(4) {
+            width: 8%;
+        }
+        
+        th:nth-child(5), td:nth-child(5) {
+            width: 15%;
+        }
+        
+        th:nth-child(6), td:nth-child(6) {
+            width: 27%;
+        }
+        
+        th:nth-child(7), td:nth-child(7) {
+            width: 15%;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background: #F3F4F6;
+        }
+        
+        tr:hover {
+            background-color: #EFF6FF;
+        }
+        
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* Footer links */
+        .footer-links {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.9rem;
+            padding-top: 20px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: color 0.2s ease;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-links a[style="color: red;"] {
+            color: var(--error) !important;
+        }
+        
+        /* LinkedIn Link Styling */
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .linkedin-link:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .linkedin-link i {
+            margin-right: 6px;
+        }
+        
+        /* Updated Chat Popup */
+        #chat-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 360px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 2;
+            border: 1px solid var(--chat-border);
+        }
+        
+        #chat-popup.open {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        #chat-popup .header {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        #chat-popup .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        #chat-popup .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        #chat-popup .messages {
+            padding: 20px;
+            height: 260px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--chat-bg);
+        }
+        
+        #chat-popup .messages div {
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 85%;
+            line-height: 1.5;
+            position: relative;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            animation: fadeInMessage 0.3s ease-out;
+        }
+        
+        #chat-popup .messages div:nth-child(odd) {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        #chat-popup .messages div:nth-child(even) {
+            align-self: flex-start;
+            background-color: white;
+            color: var(--dark);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--chat-border);
+        }
+        
+        #chat-popup .messages div i {
+            margin-right: 6px;
+        }
+        
+        #chat-popup .input-container {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid var(--chat-border);
+            position: relative;
+        }
+        
+        #chat-popup textarea {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid var(--chat-border);
+            border-radius: 12px;
+            font-size: 14px;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        
+        #chat-popup textarea:focus {
+            outline: none;
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        #chat-popup button {
+            margin-left: 10px;
+            padding: 0 18px;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #chat-popup button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+        
+        #chat-popup button:active {
+            transform: translateY(0);
+        }
+        
+        /* Chat Button */
+        #chat-btn-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        #chat-btn-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.5);
+        }
+        
+        #chat-btn-container:active {
+            transform: translateY(-1px);
+        }
+        
+        #chat-btn-container .chat-icon {
+            font-size: 18px;
+        }
+        
+        /* Sidebar content styling */
+        .sidebar-content {
+            text-align: center;
+            z-index: 1;
+            width: 100%;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo i {
+            font-size: 36px;
+            color: white;
+        }
+        
+        .sidebar-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .sidebar-text {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        
+        .features {
+            width: 100%;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            text-align: left;
+        }
+        
+        .feature i {
+            font-size: 24px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                margin: 20px 0;
+                max-height: none;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .results-section {
+                width: 100%;
+                padding: 30px 20px;
+                max-height: none;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            #chat-popup {
+                width: 90%;
+                right: 5%;
+                bottom: 10px;
+            }
+            
+            #chat-btn-container {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left sidebar section -->
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1 class="sidebar-title">Alumni Connect</h1>
+                <p class="sidebar-text">Here are your search results. Select alumni to connect with and send messages.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="feature-text">Select multiple alumni by checking the boxes</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-envelope"></i>
+                        <span class="feature-text">Send messages to selected alumni</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-link"></i>
+                        <span class="feature-text">Connect on LinkedIn for professional networking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results section -->
+        <div class="results-section">
+            <div class="results-header">
+                <h1>Filtered Results</h1>
+                <p>Alumni matching your search criteria</p>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="5%"><input type="checkbox" id="select-all" onclick="toggleAllCheckboxes(this)"></th>
+                            <th>Name</th>
+                            <th>Discipline</th>
+                            <th>Batch</th>
+                            <th>Location</th>
+                            <th>Headline</th>
+                            <th>LinkedIn</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-tbody">
+                        {% if results %}
+                            {{ results|safe }}
+                        {% else %}
+                            <tr><td colspan="7" style="text-align: center; padding: 30px;">No results found</td></tr>
+                        {% endif %}
+                    </tbody>      
+                </table>
+            </div>
+            
+            <div class="footer-links">
+                <a href="/request"><i class="fas fa-arrow-left"></i> Back to Request Form</a> | <a href="/logout" style="color: red;"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Popup - Redesigned UI -->
+    <div id="chat-popup">
+        <div class="header">
+            <span><i class="fas fa-envelope"></i> Email Alumni</span>
+            <button class="close-btn" onclick="toggleChat()" aria-label="Close chat">×</button>
+        </div>
+        <div class="messages" id="chat-messages"></div>
+        <div class="input-container">
+            <textarea id="chat-input" placeholder="Compose your message to selected alumni..."></textarea>
+            <button id="send-btn" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Chat Button -->
+    <div id="chat-btn-container" role="button" tabindex="0" aria-label="Open chat with alumni" onclick="toggleChat()">
+        <span class="chat-text">Email Alumni</span>
+        <span class="chat-icon"><i class="fas fa-paper-plane"></i></span>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+            
+            // Process LinkedIn URLs to display as "LinkedIn Profile" text
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                // Add checkbox to each row if it doesn't already have one
+                if (!row.querySelector('td:first-child input[type="checkbox"]')) {
+                    const firstCell = row.insertCell(0);
+                    firstCell.innerHTML = '<input type="checkbox" class="row-checkbox">';
+                }
+                
+                // Find the LinkedIn cell (last column)
+                const linkedinCell = row.cells[row.cells.length - 1];
+                if (linkedinCell) {
+                    const linkedinUrl = linkedinCell.textContent.trim();
+                    // Only replace if it looks like a URL
+                    if (linkedinUrl && (linkedinUrl.includes('linkedin.com') || linkedinUrl.startsWith('http'))) {
+                        linkedinCell.innerHTML = `<a href="${linkedinUrl}" class="linkedin-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Profile</a>`;
+                    }
+                }
+            });
+        });
+
+        function toggleChat() {
+            const chatPopup = document.getElementById('chat-popup');
+            chatPopup.classList.toggle('open');
+        }
+
+        const textarea = document.getElementById('chat-input');
+        textarea.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight > 120 ? 120 : this.scrollHeight) + 'px';
+        });
+
+        async function sendMessageToAlumni(message) {
+            // Get selected checkboxes
+            const selectedIndexes = Array.from(document.querySelectorAll('.row-checkbox'))
+                .map((cb, i) => cb.checked ? i : null)
+                .filter(i => i !== null);
+
+            // Get the chat messages container
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // If no alumni is selected, display a warning in the chat
+            if (selectedIndexes.length === 0) {
+                const botResponse = document.createElement('div');
+                botResponse.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No alumni selected to send email.`;
+                chatMessages.appendChild(botResponse);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return; // Stop further execution if no alumni are selected
+            }
+
+            // Proceed if alumni are selected (email sending logic)
+            const response = await fetch('/send-message-to-alumni', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, selectedIndexes })
+            });
+
+            const data = await response.json();
+            
+            // Show the success or error message in the chatbox
+            const botResponse = document.createElement('div');
+            if (response.ok) {
+                botResponse.innerHTML = `<i class="fas fa-check-circle"></i> Email sent to alumni successfully.`;
+            } else {
+                botResponse.innerHTML = `<i class="fas fa-times-circle"></i> Error: ${data.error || 'Unknown error'}`;
+            }
+            chatMessages.appendChild(botResponse);
+            chatMessages.scrollTop = chatMessages.scrollHeight;  // Scroll to the latest message
+        }
+
+        // Button click event listener for the "send-btn" button
+        document.getElementById('send-btn').addEventListener('click', async () => {
+            const messageInput = document.getElementById('chat-input');
+            const message = messageInput.value.trim();
+            const chatMessages = document.getElementById('chat-messages');
+
+            if (!message) return;
+            if (message.length > 1000) {
+                alert("Message too long. Please keep it under 1000 characters.");
+                return;
+            }
+
+            // Add the user's message to the chatbox
+            const newMessage = document.createElement('div');
+            newMessage.textContent = message;
+            chatMessages.appendChild(newMessage);
+
+            // Clear input field and scroll to latest message
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // Call sendMessageToAlumni and send the message
+                const serverResponse = await sendMessageToAlumni(message);
+                // Handle the bot response in the chatbox (already done in sendMessageToAlumni)
+            } catch (error) {
+                const botResponse = document.createElement('div');
+                botResponse.innerHTML = `<i class="fas fa-times-circle"></i> Error: ${error.message}`;
+                chatMessages.appendChild(botResponse);
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('send-btn').click();
+            }
+        });
+    
+        function toggleAllCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+        }
+    </script>  
+</body>
+</html>
